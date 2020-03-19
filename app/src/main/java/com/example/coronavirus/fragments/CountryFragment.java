@@ -7,9 +7,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.example.coronavirus.R;
 import com.example.coronavirus.adapters.CountryArrayAdapter;
@@ -76,6 +78,7 @@ public class CountryFragment extends Fragment {
     private SearchView mSearchView;
     private ProgressBar mProgressBar;
     private View mHeaders;
+    private TextView mEmptyTextView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,6 +91,9 @@ public class CountryFragment extends Fragment {
         mHeaders = (View) RootView.findViewById(R.id.headers);
         mListView = (ListView) RootView.findViewById(R.id.list);
         mSearchView = (SearchView) RootView.findViewById(R.id.searchView);
+        mEmptyTextView = (TextView) RootView.findViewById(R.id.emptyTextView);
+
+        mListView.setEmptyView(mEmptyTextView);
 
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -105,6 +111,7 @@ public class CountryFragment extends Fragment {
         mProgressBar.setVisibility(View.VISIBLE);
         mSearchView.setVisibility(View.GONE);
         mHeaders.setVisibility(View.GONE);
+        mEmptyTextView.setVisibility(View.INVISIBLE);
 
         COVID19DataService service = RetrofitClientInstance.getRetrofitInstance().create(COVID19DataService.class);
         Call<CountryModel> call = service.getCountries();
