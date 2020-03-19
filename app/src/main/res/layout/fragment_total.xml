@@ -42,6 +42,15 @@
             android:gravity="center"
             app:secondaryText="Total Recovered" />
 
+        <com.example.coronavirus.views.TotalView
+            android:id="@+id/statisticTakenAtView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:src="@drawable/ic_event_note_24px"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            app:secondaryText="Last Updated" />
+
     </LinearLayout>
 
     <ProgressBar

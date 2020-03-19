@@ -16,6 +16,11 @@ import com.example.coronavirus.network.COVID19DataService;
 import com.example.coronavirus.network.RetrofitClientInstance;
 import com.example.coronavirus.views.TotalView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -72,6 +77,7 @@ public class TotalFragment extends Fragment {
     private TotalView mTotalConfirmedView;
     private TotalView mTotalDeceasedView;
     private TotalView mTotalRecoveredView;
+    private TotalView mStatisticTakenAtView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,6 +90,7 @@ public class TotalFragment extends Fragment {
         mTotalConfirmedView = (TotalView) RootView.findViewById(R.id.totalConfirmedView);
         mTotalDeceasedView = (TotalView) RootView.findViewById(R.id.totalDeceasedView);
         mTotalRecoveredView = (TotalView) RootView.findViewById(R.id.totalRecoveredView);
+        mStatisticTakenAtView = (TotalView) RootView.findViewById(R.id.statisticTakenAtView);
 
         mProgressBar.setVisibility(View.VISIBLE);
         mTotalViewContainer.setVisibility(View.GONE);
@@ -97,6 +104,7 @@ public class TotalFragment extends Fragment {
                 mTotalConfirmedView.setPrimaryText(response.body().getTotalCases());
                 mTotalDeceasedView.setPrimaryText(response.body().getTotalDeaths());
                 mTotalRecoveredView.setPrimaryText(response.body().getTotalRecovered());
+                mStatisticTakenAtView.setPrimaryText(parseLastUpdated(response.body().getStatisticTakenAt()));
 
                 mProgressBar.setVisibility(View.GONE);
                 mTotalViewContainer.setVisibility(View.VISIBLE);
@@ -109,5 +117,22 @@ public class TotalFragment extends Fragment {
         });
 
         return RootView;
+    }
+
+    private String parseLastUpdated(String str) {
+        try  {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = format.parse(str);
+
+            DateFormat outputFormatter = new SimpleDateFormat("MM/dd/yyyy");
+            String output = outputFormatter.format(date); // Output : 01/20/2012
+
+            return output;
+
+        } catch(ParseException ex) {
+
+        }
+
+        return str;
     }
 }
