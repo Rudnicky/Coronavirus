@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:src="@drawable/ic_done_all_24px"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="20dp"
             android:gravity="center"
             app:secondaryText="Total Confirmed Cases" />
 
@@ -28,8 +28,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:src="@drawable/crossbone"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             android:gravity="center"
             app:secondaryText="Total Deceased" />
 
@@ -38,7 +38,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:src="@drawable/ic_favorite_border_24px"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             android:gravity="center"
             app:secondaryText="Total Recovered" />
 
@@ -47,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:src="@drawable/ic_event_note_24px"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:gravity="center"
             app:secondaryText="Last Updated" />
 
