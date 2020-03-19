@@ -3,30 +3,22 @@ package com.example.coronavirus.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.ListFragment;
 
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.example.coronavirus.R;
 import com.example.coronavirus.adapters.CountryArrayAdapter;
 import com.example.coronavirus.models.CountriesStat;
-import com.example.coronavirus.models.Total;
+import com.example.coronavirus.models.CountryModel;
 import com.example.coronavirus.network.COVID19DataService;
 import com.example.coronavirus.network.RetrofitClientInstance;
-import com.example.coronavirus.views.TotalView;
 
 import java.util.List;
-
-import javax.xml.datatype.Duration;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,10 +27,10 @@ import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Country#newInstance} factory method to
+ * Use the {@link CountryFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Country extends Fragment {
+public class CountryFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -48,7 +40,7 @@ public class Country extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public Country() {
+    public CountryFragment() {
         // Required empty public constructor
     }
 
@@ -61,8 +53,8 @@ public class Country extends Fragment {
      * @return A new instance of fragment Country.
      */
     // TODO: Rename and change types and number of parameters
-    public static Country newInstance(String param1, String param2) {
-        Country fragment = new Country();
+    public static CountryFragment newInstance(String param1, String param2) {
+        CountryFragment fragment = new CountryFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -82,47 +74,56 @@ public class Country extends Fragment {
     private ListView mListView;
     private CountryArrayAdapter adapter;
     private SearchView mSearchView;
+    private ProgressBar mProgressBar;
+    private View mHeaders;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View RootView = inflater.inflate(R.layout.fragment_country, container, false);
 
+        mProgressBar = (ProgressBar) RootView.findViewById(R.id.progressBar);
+        mHeaders = (View) RootView.findViewById(R.id.headers);
         mListView = (ListView) RootView.findViewById(R.id.list);
         mSearchView = (SearchView) RootView.findViewById(R.id.searchView);
 
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-//                Toast.makeText(getContext(), query, Toast.LENGTH_SHORT).show();
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Toast.makeText(getContext(), newText, Toast.LENGTH_SHORT).show();
-
                 adapter.getFilter().filter(newText);
-
                 return false;
             }
         });
 
-        COVID19DataService service = RetrofitClientInstance.getRetrofitInstance().create(COVID19DataService.class);
-        Call<com.example.coronavirus.models.Country> call = service.getCountries();
+        mProgressBar.setVisibility(View.VISIBLE);
+        mSearchView.setVisibility(View.GONE);
+        mHeaders.setVisibility(View.GONE);
 
-        call.enqueue(new Callback<com.example.coronavirus.models.Country>() {
+        COVID19DataService service = RetrofitClientInstance.getRetrofitInstance().create(COVID19DataService.class);
+        Call<CountryModel> call = service.getCountries();
+
+        call.enqueue(new Callback<CountryModel>() {
             @Override
-            public void onResponse(Call<com.example.coronavirus.models.Country> call, Response<com.example.coronavirus.models.Country> response) {
+            public void onResponse(Call<CountryModel> call, Response<CountryModel> response) {
                 List<CountriesStat> list = response.body().getCountriesStat();
 
                 adapter = new CountryArrayAdapter(getContext(), list);
                 mListView.setAdapter(adapter);
+
+                mProgressBar.setVisibility(View.GONE);
+                mSearchView.setVisibility(View.VISIBLE);
+                mHeaders.setVisibility(View.VISIBLE);
             }
 
             @Override
-            public void onFailure(Call<com.example.coronavirus.models.Country> call, Throwable t) {
+            public void onFailure(Call<CountryModel> call, Throwable t) {
 
             }
         });

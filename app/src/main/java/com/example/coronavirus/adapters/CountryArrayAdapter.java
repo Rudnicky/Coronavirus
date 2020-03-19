@@ -108,6 +108,6 @@ public class CountryArrayAdapter extends BaseAdapter implements Filterable {
     }
 
     private List<CountriesStat> getFilteredResults(final CharSequence constraint) {
-        return values.stream().filter(p -> p.getCountryName().startsWith(constraint.toString())).collect(Collectors.toList());
+        return values.stream().filter(p -> p.getCountryName().toLowerCase().startsWith(constraint.toString().toLowerCase())).collect(Collectors.toList());
     }
 }

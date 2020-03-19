@@ -1,13 +1,13 @@
-package com.example.coronavirus;
+package com.example.coronavirus.adapters;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.coronavirus.fragments.Country;
-import com.example.coronavirus.fragments.Info;
-import com.example.coronavirus.fragments.Total;
+import com.example.coronavirus.fragments.CountryFragment;
+import com.example.coronavirus.fragments.InfoFragment;
+import com.example.coronavirus.fragments.TotalFragment;
 
 public class PageAdapter extends FragmentPagerAdapter {
 
@@ -23,11 +23,11 @@ public class PageAdapter extends FragmentPagerAdapter {
 
         switch (position) {
             case 0:
-                return new Total();
+                return new TotalFragment();
             case 1:
-                return new Country();
+                return new CountryFragment();
             case 2:
-                return new Info();
+                return new InfoFragment();
             default:
                 return null;
         }

@@ -3,7 +3,7 @@ package com.example.coronavirus.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Total {
+public class TotalModel {
 
     @SerializedName("total_cases")
     @Expose

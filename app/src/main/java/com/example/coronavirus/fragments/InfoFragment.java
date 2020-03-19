@@ -13,10 +13,10 @@ import com.example.coronavirus.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Info#newInstance} factory method to
+ * Use the {@link InfoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Info extends Fragment {
+public class InfoFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -26,7 +26,7 @@ public class Info extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public Info() {
+    public InfoFragment() {
         // Required empty public constructor
     }
 
@@ -39,8 +39,8 @@ public class Info extends Fragment {
      * @return A new instance of fragment Info.
      */
     // TODO: Rename and change types and number of parameters
-    public static Info newInstance(String param1, String param2) {
-        Info fragment = new Info();
+    public static InfoFragment newInstance(String param1, String param2) {
+        InfoFragment fragment = new InfoFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

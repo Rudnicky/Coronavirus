@@ -4,7 +4,7 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Country {
+public class CountryModel {
 
     @SerializedName("countries_stat")
     @Expose
