@@ -1,4 +1,4 @@
-package com.example.coronavirus.services;
+package com.example.coronavirus.components.flagcomponent;
 
 import dagger.Component;
 

@@ -1,4 +1,4 @@
-package com.example.coronavirus.services;
+package com.example.coronavirus.components.flagcomponent;
 
 import com.example.coronavirus.R;
 import com.example.coronavirus.models.CountriesStat;

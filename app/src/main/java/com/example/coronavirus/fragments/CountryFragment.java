@@ -26,15 +26,15 @@ import android.widget.Toast;
 import com.example.coronavirus.R;
 import com.example.coronavirus.activites.CountryDetailActivity;
 import com.example.coronavirus.adapters.CountryArrayAdapter;
+import com.example.coronavirus.components.networkcomponent.DaggerNetworkComponent;
 import com.example.coronavirus.managers.GlobalManager;
 import com.example.coronavirus.models.CountriesStat;
 import com.example.coronavirus.models.CountryModel;
 import com.example.coronavirus.network.COVID19DataService;
 import com.example.coronavirus.network.RetrofitClientInstance;
 
-import com.example.coronavirus.services.DaggerNetworkComponent;
-import com.example.coronavirus.services.NetworkComponent;
-import com.example.coronavirus.services.NetworkConnectivity;
+import com.example.coronavirus.components.networkcomponent.NetworkComponent;
+import com.example.coronavirus.components.networkcomponent.NetworkConnectivity;
 import com.skydoves.powermenu.MenuAnimation;
 import com.skydoves.powermenu.OnMenuItemClickListener;
 import com.skydoves.powermenu.PowerMenu;

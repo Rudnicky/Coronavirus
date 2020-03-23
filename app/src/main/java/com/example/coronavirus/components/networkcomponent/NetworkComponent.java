@@ -1,6 +1,4 @@
-package com.example.coronavirus.services;
-
-import android.content.Context;
+package com.example.coronavirus.components.networkcomponent;
 
 import dagger.Component;
 

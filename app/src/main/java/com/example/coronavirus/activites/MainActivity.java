@@ -6,26 +6,18 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
 import android.content.IntentFilter;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import com.example.coronavirus.R;
 import com.example.coronavirus.adapters.PageAdapter;
-import com.example.coronavirus.network.COVID19DataService;
-import com.example.coronavirus.network.RetrofitClientInstance;
+import com.example.coronavirus.components.networkcomponent.DaggerNetworkComponent;
 import com.example.coronavirus.receivers.NetworkStateReceiver;
-import com.example.coronavirus.services.DaggerNetworkComponent;
-import com.example.coronavirus.services.NetworkComponent;
-import com.example.coronavirus.services.NetworkConnectivity;
+import com.example.coronavirus.components.networkcomponent.NetworkComponent;
+import com.example.coronavirus.components.networkcomponent.NetworkConnectivity;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
-
-import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity implements NetworkStateReceiver.NetworkStateReceiverListener {
 

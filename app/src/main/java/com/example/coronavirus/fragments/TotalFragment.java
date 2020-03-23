@@ -13,13 +13,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coronavirus.R;
+import com.example.coronavirus.components.networkcomponent.DaggerNetworkComponent;
 import com.example.coronavirus.managers.GlobalManager;
 import com.example.coronavirus.models.TotalModel;
 import com.example.coronavirus.network.COVID19DataService;
 import com.example.coronavirus.network.RetrofitClientInstance;
-import com.example.coronavirus.services.DaggerNetworkComponent;
-import com.example.coronavirus.services.NetworkComponent;
-import com.example.coronavirus.services.NetworkConnectivity;
+import com.example.coronavirus.components.networkcomponent.NetworkComponent;
+import com.example.coronavirus.components.networkcomponent.NetworkConnectivity;
 import com.example.coronavirus.views.TotalView;
 
 import java.text.DateFormat;

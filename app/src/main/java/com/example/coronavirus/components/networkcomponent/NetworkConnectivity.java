@@ -1,4 +1,4 @@
-package com.example.coronavirus.services;
+package com.example.coronavirus.components.networkcomponent;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
