@@ -28,7 +28,7 @@ import com.example.coronavirus.activites.CountryDetailActivity;
 import com.example.coronavirus.adapters.CountryArrayAdapter;
 import com.example.coronavirus.components.networkcomponent.DaggerNetworkComponent;
 import com.example.coronavirus.managers.GlobalManager;
-import com.example.coronavirus.models.CountriesStat;
+import com.example.coronavirus.models.CountryModelList;
 import com.example.coronavirus.models.CountryModel;
 import com.example.coronavirus.network.COVID19DataService;
 import com.example.coronavirus.network.RetrofitClientInstance;
@@ -124,7 +124,7 @@ public class CountryFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                CountriesStat country = (CountriesStat) adapter.getItem(position);
+                CountryModelList country = (CountryModelList) adapter.getItem(position);
 
                 Intent intent = new Intent(getContext(), CountryDetailActivity.class);
                 intent.putExtra("Country", country);
@@ -217,7 +217,7 @@ public class CountryFragment extends Fragment {
     private Callback<CountryModel> onWebServiceCallback = new Callback<CountryModel>() {
         @Override
         public void onResponse(Call<CountryModel> call, Response<CountryModel> response) {
-            List<CountriesStat> list = response.body().getCountriesStat();
+            List<CountryModelList> list = response.body().getCountryModelList();
 
             adapter = new CountryArrayAdapter(getContext(), list);
             mListView.setAdapter(adapter);

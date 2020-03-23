@@ -1,7 +1,7 @@
 package com.example.coronavirus.components.flagcomponent;
 
 import com.example.coronavirus.R;
-import com.example.coronavirus.models.CountriesStat;
+import com.example.coronavirus.models.CountryModelList;
 
 import javax.inject.Inject;
 
@@ -10,7 +10,7 @@ public class FlagManager {
     @Inject
     public FlagManager() {}
 
-    public int getFlagResource(CountriesStat country) {
+    public int getFlagResource(CountryModelList country) {
         String str = country.getCountryName().trim().toLowerCase();
 
         if (str.contains("poland")) {

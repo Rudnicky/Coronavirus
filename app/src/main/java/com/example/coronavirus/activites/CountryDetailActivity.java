@@ -10,9 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.coronavirus.R;
-import com.example.coronavirus.models.CountriesStat;
-
-import org.w3c.dom.Text;
+import com.example.coronavirus.models.CountryModelList;
 
 public class CountryDetailActivity extends AppCompatActivity {
 
@@ -49,7 +47,7 @@ public class CountryDetailActivity extends AppCompatActivity {
             }
         });
 
-        CountriesStat country = (CountriesStat) getIntent().getSerializableExtra("Country");
+        CountryModelList country = (CountryModelList) getIntent().getSerializableExtra("Country");
 
         Toolbar mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);

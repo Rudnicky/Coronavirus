@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 
 import com.example.coronavirus.R;
 import com.example.coronavirus.components.flagcomponent.DaggerFlagComponent;
-import com.example.coronavirus.models.CountriesStat;
+import com.example.coronavirus.models.CountryModelList;
 import com.example.coronavirus.components.flagcomponent.FlagComponent;
 import com.example.coronavirus.components.flagcomponent.FlagManager;
 
@@ -28,10 +28,10 @@ public class CountryArrayAdapter extends BaseAdapter implements Filterable {
 
     private FlagManager mFlagManager;
     private final Context context;
-    private List<CountriesStat> values;
-    private List<CountriesStat> filteredValues;
+    private List<CountryModelList> values;
+    private List<CountryModelList> filteredValues;
 
-    public CountryArrayAdapter(@NonNull Context context, List<CountriesStat> values) {
+    public CountryArrayAdapter(@NonNull Context context, List<CountryModelList> values) {
         this.context = context;
         this.values = values;
         this.filteredValues = values;
@@ -89,7 +89,7 @@ public class CountryArrayAdapter extends BaseAdapter implements Filterable {
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
 
-                filteredValues = (List<CountriesStat>) results.values;
+                filteredValues = (List<CountryModelList>) results.values;
                 notifyDataSetChanged();
             }
 
@@ -102,7 +102,7 @@ public class CountryArrayAdapter extends BaseAdapter implements Filterable {
                 } else {
 
                     if (constraint.toString() == "Sort by Cases") {
-                        List<CountriesStat> results = new ArrayList<CountriesStat>(values);
+                        List<CountryModelList> results = new ArrayList<CountryModelList>(values);
 
                         results.forEach((countryCase) -> {
                             String cc = countryCase.getCases();
@@ -118,7 +118,7 @@ public class CountryArrayAdapter extends BaseAdapter implements Filterable {
                         filteredResults.values = results;
 
                     } else if (constraint.toString() == "Sort by Deaths") {
-                        List<CountriesStat> results = new ArrayList<CountriesStat>(values);
+                        List<CountryModelList> results = new ArrayList<CountryModelList>(values);
 
                         results.forEach((countryCase) -> {
                             String cc = countryCase.getDeaths();
@@ -133,7 +133,7 @@ public class CountryArrayAdapter extends BaseAdapter implements Filterable {
                         filteredResults.count = results.size();
                         filteredResults.values = results;
                     } else {
-                        List<CountriesStat> results = getFilteredResults(constraint);
+                        List<CountryModelList> results = getFilteredResults(constraint);
                         filteredResults.count = results.size();
                         filteredResults.values = results;
                     }
@@ -146,7 +146,7 @@ public class CountryArrayAdapter extends BaseAdapter implements Filterable {
 
 
 
-    private List<CountriesStat> getFilteredResults(final CharSequence constraint) {
+    private List<CountryModelList> getFilteredResults(final CharSequence constraint) {
         return values.stream().filter(p -> p.getCountryName().toLowerCase().startsWith(constraint.toString().toLowerCase())).collect(Collectors.toList());
     }
 }

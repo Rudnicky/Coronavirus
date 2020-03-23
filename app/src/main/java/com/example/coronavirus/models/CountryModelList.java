@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class CountriesStat implements Comparable<CountriesStat>, Serializable {
+public class CountryModelList implements Comparable<CountryModelList>, Serializable {
 
     @SerializedName("country_name")
     @Expose
@@ -135,7 +135,7 @@ public class CountriesStat implements Comparable<CountriesStat>, Serializable {
     }
 
     @Override
-    public int compareTo(CountriesStat o) {
+    public int compareTo(CountryModelList o) {
         return this.getParsedCases().compareTo(o.getParsedCases());
     }
 }

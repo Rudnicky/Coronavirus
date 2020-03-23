@@ -8,17 +8,17 @@ public class CountryModel {
 
     @SerializedName("countries_stat")
     @Expose
-    private List<CountriesStat> countriesStat = null;
+    private List<CountryModelList> countryModelList = null;
     @SerializedName("statistic_taken_at")
     @Expose
     private String statisticTakenAt;
 
-    public List<CountriesStat> getCountriesStat() {
-        return countriesStat;
+    public List<CountryModelList> getCountryModelList() {
+        return countryModelList;
     }
 
-    public void setCountriesStat(List<CountriesStat> countriesStat) {
-        this.countriesStat = countriesStat;
+    public void setCountryModelList(List<CountryModelList> countryModelList) {
+        this.countryModelList = countryModelList;
     }
 
     public String getStatisticTakenAt() {
