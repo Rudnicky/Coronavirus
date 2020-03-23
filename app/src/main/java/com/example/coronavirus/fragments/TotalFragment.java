@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coronavirus.R;
@@ -16,6 +17,9 @@ import com.example.coronavirus.managers.GlobalManager;
 import com.example.coronavirus.models.TotalModel;
 import com.example.coronavirus.network.COVID19DataService;
 import com.example.coronavirus.network.RetrofitClientInstance;
+import com.example.coronavirus.services.DaggerNetworkComponent;
+import com.example.coronavirus.services.NetworkComponent;
+import com.example.coronavirus.services.NetworkConnectivity;
 import com.example.coronavirus.views.TotalView;
 
 import java.text.DateFormat;
@@ -38,6 +42,7 @@ public class TotalFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    private NetworkConnectivity mNetworkConnectivity;
     private COVID19DataService mWebService;
     private Call<TotalModel> mWebServiceCall;
     private boolean mIsRefreshing = false;
@@ -48,6 +53,7 @@ public class TotalFragment extends Fragment {
     private TotalView mTotalDeceasedView;
     private TotalView mTotalRecoveredView;
     private TotalView mStatisticTakenAtView;
+    private TextView mErrorMessageText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,24 +67,45 @@ public class TotalFragment extends Fragment {
         mTotalDeceasedView = (TotalView) RootView.findViewById(R.id.totalDeceasedView);
         mTotalRecoveredView = (TotalView) RootView.findViewById(R.id.totalRecoveredView);
         mStatisticTakenAtView = (TotalView) RootView.findViewById(R.id.statisticTakenAtView);
+        mErrorMessageText = (TextView) RootView.findViewById(R.id.errorMessageText);
 
         mProgressBar.setVisibility(View.VISIBLE);
         mTotalViewContainer.setVisibility(View.GONE);
 
-        mWebService = RetrofitClientInstance.getRetrofitInstance().create(COVID19DataService.class);
-        mWebServiceCall = mWebService.getTotal();
-        mWebServiceCall.enqueue(onTotalWebServiceCall);
+        /** check if user has access to the internet **/
+        NetworkComponent networkComponent = DaggerNetworkComponent.create();
+        mNetworkConnectivity = networkComponent.getNetworkConnectivity();
+        if (!mNetworkConnectivity.hasAccess(getContext())) {
+            mProgressBar.setVisibility(View.GONE);
+            mErrorMessageText.setVisibility(View.VISIBLE);
+        } else {
+            mWebService = RetrofitClientInstance.getRetrofitInstance().create(COVID19DataService.class);
+            mWebServiceCall = mWebService.getTotal();
+            mWebServiceCall.enqueue(onTotalWebServiceCall);
+        }
 
         return RootView;
     }
 
     public void refreshData() {
-        mProgressBar.setVisibility(View.VISIBLE);
-        mTotalViewContainer.setVisibility(View.GONE);
+        if (mNetworkConnectivity != null) {
+            if (!mNetworkConnectivity.hasAccess(getContext())) {
+                mProgressBar.setVisibility(View.GONE);
+                mErrorMessageText.setVisibility(View.VISIBLE);
+            } else {
+                mProgressBar.setVisibility(View.VISIBLE);
+                mTotalViewContainer.setVisibility(View.GONE);
+                mErrorMessageText.setVisibility(View.GONE);
 
-        mWebServiceCall = mWebService.getTotal();
-        mWebServiceCall.enqueue(onTotalWebServiceCall);
-        mIsRefreshing = true;
+                if (mWebService == null) {
+                    mWebService = RetrofitClientInstance.getRetrofitInstance().create(COVID19DataService.class);
+                }
+
+                mWebServiceCall = mWebService.getTotal();
+                mWebServiceCall.enqueue(onTotalWebServiceCall);
+                mIsRefreshing = true;
+            }
+        }
     }
 
     private Callback<TotalModel> onTotalWebServiceCall = new Callback<TotalModel>() {

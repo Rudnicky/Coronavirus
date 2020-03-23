@@ -67,4 +67,12 @@
         android:layout_gravity="center"
         android:text="No matched results" />
 
+    <TextView
+        android:id="@+id/errorMessageText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:text="You're not connected to the internet" />
+
 </FrameLayout>

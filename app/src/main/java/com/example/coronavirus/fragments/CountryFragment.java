@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,9 @@ import com.example.coronavirus.models.CountryModel;
 import com.example.coronavirus.network.COVID19DataService;
 import com.example.coronavirus.network.RetrofitClientInstance;
 
+import com.example.coronavirus.services.DaggerNetworkComponent;
+import com.example.coronavirus.services.NetworkComponent;
+import com.example.coronavirus.services.NetworkConnectivity;
 import com.skydoves.powermenu.MenuAnimation;
 import com.skydoves.powermenu.OnMenuItemClickListener;
 import com.skydoves.powermenu.PowerMenu;
@@ -53,9 +57,11 @@ public class CountryFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    private NetworkConnectivity mNetworkConnectivity;
     private COVID19DataService mWebService;
     private Call<CountryModel> mWebServiceCall;
     private boolean mIsRefreshing = false;
+    private boolean mDetailsWasShown = false;
 
     private ListView mListView;
     private CountryArrayAdapter adapter;
@@ -67,6 +73,7 @@ public class CountryFragment extends Fragment {
     private RelativeLayout mRelativeContainer;
     private PowerMenu mPowerMenu;
     private LinearLayout mRootContainer;
+    private TextView mErrorMessageText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,6 +90,7 @@ public class CountryFragment extends Fragment {
         mSortButton = (ImageButton) RootView.findViewById(R.id.sortButton);
         mRelativeContainer = (RelativeLayout) RootView.findViewById(R.id.relativeContainer);
         mRootContainer = (LinearLayout) RootView.findViewById(R.id.rootContainer);
+        mErrorMessageText = (TextView) RootView.findViewById(R.id.errorMessageText);
 
         mPowerMenu = new PowerMenu.Builder(getContext())
                 .addItem(new PowerMenuItem("Sort by Cases", false)) // add an item.
@@ -121,6 +129,8 @@ public class CountryFragment extends Fragment {
                 Intent intent = new Intent(getContext(), CountryDetailActivity.class);
                 intent.putExtra("Country", country);
 
+                mDetailsWasShown = true;
+
                 startActivity(intent);
             }
         });
@@ -133,7 +143,9 @@ public class CountryFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
+                if (adapter != null) {
+                    adapter.getFilter().filter(newText);
+                }
                 return false;
             }
         });
@@ -158,25 +170,48 @@ public class CountryFragment extends Fragment {
         mEmptyTextView.setVisibility(View.INVISIBLE);
         mRootContainer.setVisibility(View.GONE);
 
-        mWebService = RetrofitClientInstance.getRetrofitInstance().create(COVID19DataService.class);
-        mWebServiceCall = mWebService.getCountries();
-        mWebServiceCall.enqueue(onWebServiceCallback);
+        /** check if user has access to the internet **/
+        NetworkComponent networkComponent = DaggerNetworkComponent.create();
+        mNetworkConnectivity = networkComponent.getNetworkConnectivity();
+        if (!mNetworkConnectivity.hasAccess(getContext())) {
+            mProgressBar.setVisibility(View.GONE);
+            mErrorMessageText.setVisibility(View.VISIBLE);
+        } else {
+            mWebService = RetrofitClientInstance.getRetrofitInstance().create(COVID19DataService.class);
+            mWebServiceCall = mWebService.getCountries();
+            mWebServiceCall.enqueue(onWebServiceCallback);
+        }
 
         return RootView;
     }
 
     public void refreshData() {
+        if (mNetworkConnectivity != null && !mDetailsWasShown) {
+            if (!mNetworkConnectivity.hasAccess(getContext())) {
+                mProgressBar.setVisibility(View.GONE);
+                mErrorMessageText.setVisibility(View.VISIBLE);
+                mSearchView.setVisibility(View.GONE);
+                mHeaders.setVisibility(View.GONE);
+                mEmptyTextView.setVisibility(View.INVISIBLE);
+                mRootContainer.setVisibility(View.GONE);
+            } else {
+                mProgressBar.setVisibility(View.VISIBLE);
+                mErrorMessageText.setVisibility(View.GONE);
+                mSearchView.setVisibility(View.GONE);
+                mHeaders.setVisibility(View.GONE);
+                mEmptyTextView.setVisibility(View.INVISIBLE);
+                mRootContainer.setVisibility(View.GONE);
 
-        mIsRefreshing = true;
+                if (mWebService == null) {
+                    mWebService = RetrofitClientInstance.getRetrofitInstance().create(COVID19DataService.class);
+                }
 
-        mProgressBar.setVisibility(View.VISIBLE);
-        mSearchView.setVisibility(View.GONE);
-        mHeaders.setVisibility(View.GONE);
-        mEmptyTextView.setVisibility(View.INVISIBLE);
-        mRootContainer.setVisibility(View.GONE);
+                mWebServiceCall = mWebService.getCountries();
+                mWebServiceCall.enqueue(onWebServiceCallback);
 
-        mWebServiceCall = mWebService.getCountries();
-        mWebServiceCall.enqueue(onWebServiceCallback);
+                mIsRefreshing = true;
+            }
+        }
     }
 
     private Callback<CountryModel> onWebServiceCallback = new Callback<CountryModel>() {
@@ -220,4 +255,11 @@ public class CountryFragment extends Fragment {
             adapter.getFilter().filter(item.getTitle());
         }
     };
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i("CountryFragment", "onResume()");
+        mDetailsWasShown = false;
+    }
 }
