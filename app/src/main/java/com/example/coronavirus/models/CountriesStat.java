@@ -40,6 +40,11 @@ public class CountriesStat implements Comparable<CountriesStat>, Serializable {
 
     private int parsedCases;
     private int parsedDeaths;
+    private int flagResourceId;
+
+    public void setFlagResourceId(int flagResourceId) { this.flagResourceId = flagResourceId; }
+
+    public int getFlagResourceId() { return this.flagResourceId; }
 
     public String getCountryName() {
         return countryName;

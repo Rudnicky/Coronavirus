@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.coronavirus.R;
@@ -23,6 +24,7 @@ public class CountryDetailActivity extends AppCompatActivity {
     private TextView mNewCasesText;
     private TextView mSeriousText;
     private TextView mTotal;
+    private ImageView mFlagImage;
     private Button mBackButton;
 
     @Override
@@ -38,6 +40,7 @@ public class CountryDetailActivity extends AppCompatActivity {
         mNewCasesText = (TextView) findViewById(R.id.newCasesText);
         mSeriousText = (TextView) findViewById(R.id.seriousText);
         mTotal = (TextView) findViewById(R.id.activeCasesText);
+        mFlagImage = (ImageView) findViewById(R.id.flagImage);
         mBackButton = (Button) findViewById(R.id.backButton);
         mBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,5 +64,6 @@ public class CountryDetailActivity extends AppCompatActivity {
         mNewCasesText.setText(country.getNewCases());
         mSeriousText.setText(country.getSeriousCritical());
         mTotal.setText(country.getTotalCasesPer1mPopulation());
+        mFlagImage.setImageResource(country.getFlagResourceId());
     }
 }
