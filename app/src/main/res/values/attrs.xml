@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <declare-styleable name="TotalView">
         <attr name="src" format="integer" />
         <attr name="primaryText" format="string" />
         <attr name="secondaryText" format="string" />
     </declare-styleable>
+
+    <declare-styleable name="InfoView">
+        <attr name="imageHeader" format="integer" />
+        <attr name="headerText" format="string" />
+        <attr name="contentText" format="string" />
+    </declare-styleable>
+
 </resources>

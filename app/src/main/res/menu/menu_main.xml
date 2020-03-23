@@ -8,4 +8,5 @@
         android:icon="@drawable/ic_refresh_24px"
         android:title="Refresh"
         android:orderInCategory="100" />
+
 </menu>

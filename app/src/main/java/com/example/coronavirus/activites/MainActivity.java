@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
 
         mPageAdapter = new PageAdapter(getSupportFragmentManager(), mTabLayout.getTabCount());
         mViewPager.setAdapter(mPageAdapter);
-        mViewPager.setOffscreenPageLimit(3);
 
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -50,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 mViewPager.setCurrentItem(tab.getPosition());
                 if (tab.getPosition() == 0 || tab.getPosition() == 1 || tab.getPosition() == 2) {
                     mPageAdapter.notifyDataSetChanged();
+                    mPageAdapter.setCurrentPosition(tab.getPosition());
                 }
             }
 
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refresh:
-                Toast.makeText(MainActivity.this,  " Refresh Selected!", Toast.LENGTH_SHORT).show();
+                mPageAdapter.refreshData();
                 break;
         }
 

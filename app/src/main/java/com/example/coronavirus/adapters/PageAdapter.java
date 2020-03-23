@@ -12,22 +12,43 @@ import com.example.coronavirus.fragments.TotalFragment;
 public class PageAdapter extends FragmentPagerAdapter {
 
     private int mNumberOfTabs;
+    private int mCurrentPosition;
+    private TotalFragment mTotalFragment;
+    private CountryFragment mCountryFragment;
+    private InfoFragment mInfoFragment;
 
     public PageAdapter(FragmentManager fm, int numberOfTabs) {
         super(fm);
         this.mNumberOfTabs = numberOfTabs;
+
+        mTotalFragment = new TotalFragment();
+        mCountryFragment = new CountryFragment();
+        mInfoFragment = new InfoFragment();
+    }
+
+
+    public void refreshData() {
+        switch (mCurrentPosition) {
+            case 0:
+                mTotalFragment.refreshData();
+            case 1:
+                mCountryFragment.refreshData();
+        }
+    }
+
+    public void setCurrentPosition(int position) {
+        mCurrentPosition = position;
     }
 
     @Override
     public Fragment getItem(int position) {
-
         switch (position) {
             case 0:
-                return new TotalFragment();
+                return mTotalFragment;
             case 1:
-                return new CountryFragment();
+                return mCountryFragment;
             case 2:
-                return new InfoFragment();
+                return mInfoFragment;
             default:
                 return null;
         }

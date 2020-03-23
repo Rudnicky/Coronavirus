@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.coronavirus.R;
+import com.example.coronavirus.managers.GlobalManager;
 import com.example.coronavirus.models.TotalModel;
 import com.example.coronavirus.network.COVID19DataService;
 import com.example.coronavirus.network.RetrofitClientInstance;
@@ -72,6 +74,10 @@ public class TotalFragment extends Fragment {
         }
     }
 
+    private COVID19DataService mWebService;
+    private Call<TotalModel> mWebServiceCall;
+    private boolean mIsRefreshing = false;
+
     private ProgressBar mProgressBar;
     private LinearLayout mTotalViewContainer;
     private TotalView mTotalConfirmedView;
@@ -95,29 +101,47 @@ public class TotalFragment extends Fragment {
         mProgressBar.setVisibility(View.VISIBLE);
         mTotalViewContainer.setVisibility(View.GONE);
 
-        COVID19DataService service = RetrofitClientInstance.getRetrofitInstance().create(COVID19DataService.class);
-        Call<TotalModel> call = service.getTotal();
-        call.enqueue(new Callback<TotalModel>() {
-            @Override
-            public void onResponse(Call<TotalModel> call, Response<TotalModel> response) {
-
-                mTotalConfirmedView.setPrimaryText(response.body().getTotalCases());
-                mTotalDeceasedView.setPrimaryText(response.body().getTotalDeaths());
-                mTotalRecoveredView.setPrimaryText(response.body().getTotalRecovered());
-                mStatisticTakenAtView.setPrimaryText(parseLastUpdated(response.body().getStatisticTakenAt()));
-
-                mProgressBar.setVisibility(View.GONE);
-                mTotalViewContainer.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onFailure(Call<TotalModel> call, Throwable t) {
-
-            }
-        });
+        mWebService = RetrofitClientInstance.getRetrofitInstance().create(COVID19DataService.class);
+        mWebServiceCall = mWebService.getTotal();
+        mWebServiceCall.enqueue(onTotalWebServiceCall);
 
         return RootView;
     }
+
+    public void refreshData() {
+        mProgressBar.setVisibility(View.VISIBLE);
+        mTotalViewContainer.setVisibility(View.GONE);
+
+        mWebServiceCall = mWebService.getTotal();
+        mWebServiceCall.enqueue(onTotalWebServiceCall);
+        mIsRefreshing = true;
+    }
+
+    private Callback<TotalModel> onTotalWebServiceCall = new Callback<TotalModel>() {
+        @Override
+        public void onResponse(Call<TotalModel> call, Response<TotalModel> response) {
+            mTotalConfirmedView.setPrimaryText(response.body().getTotalCases());
+            mTotalDeceasedView.setPrimaryText(response.body().getTotalDeaths());
+            mTotalRecoveredView.setPrimaryText(response.body().getTotalRecovered());
+            mStatisticTakenAtView.setPrimaryText(parseLastUpdated(response.body().getStatisticTakenAt()));
+
+            mProgressBar.setVisibility(View.GONE);
+            mTotalViewContainer.setVisibility(View.VISIBLE);
+
+            GlobalManager instance = GlobalManager.GetInstance();
+            instance.isTotalActive = true;
+
+            if (mIsRefreshing) {
+                Toast.makeText(getContext(), "World Statistic Updated", Toast.LENGTH_SHORT).show();
+                mIsRefreshing = false;
+            }
+        }
+
+        @Override
+        public void onFailure(Call<TotalModel> call, Throwable t) {
+
+        }
+    };
 
     private String parseLastUpdated(String str) {
         try  {

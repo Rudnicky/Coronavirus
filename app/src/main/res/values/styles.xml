@@ -18,4 +18,17 @@
         <item name="android:textColorSecondary">@android:color/white</item> <!-- Icon color of the Toolbar -->
     </style>
 
+    <style name="HeaderStyle" parent="@style/Widget.AppCompat.TextView">
+        <item name="android:textSize">20sp</item>
+        <item name="fontWeight">500</item>
+    </style>
+
+    <style name="PrimaryTextStyle" parent="@style/Widget.AppCompat.TextView">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="BriefDescriptionTextStyle" parent="@style/Widget.AppCompat.TextView">
+        <item name="android:textSize">12sp</item>
+    </style>
+
 </resources>

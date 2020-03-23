@@ -3,7 +3,9 @@ package com.example.coronavirus.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CountriesStat {
+import java.io.Serializable;
+
+public class CountriesStat implements Comparable<CountriesStat>, Serializable {
 
     @SerializedName("country_name")
     @Expose
@@ -36,6 +38,9 @@ public class CountriesStat {
     @Expose
     private String totalCasesPer1mPopulation;
 
+    private int parsedCases;
+    private int parsedDeaths;
+
     public String getCountryName() {
         return countryName;
     }
@@ -47,6 +52,14 @@ public class CountriesStat {
     public String getCases() {
         return cases;
     }
+
+    public Integer getParsedCases() { return parsedCases; }
+
+    public void setParsedCases(int parsedCases) { this.parsedCases = parsedCases; }
+
+    public Integer getParsedDeaths() { return parsedDeaths; }
+
+    public void setParsedDeaths(int parsedDeaths) { this.parsedDeaths = parsedDeaths; }
 
     public void setCases(String cases) {
         this.cases = cases;
@@ -116,4 +129,8 @@ public class CountriesStat {
         this.totalCasesPer1mPopulation = totalCasesPer1mPopulation;
     }
 
+    @Override
+    public int compareTo(CountriesStat o) {
+        return this.getParsedCases().compareTo(o.getParsedCases());
+    }
 }
