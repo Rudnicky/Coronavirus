@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,10 @@ public class TotalFragment extends Fragment {
     private TotalView mStatisticTakenAtView;
     private TextView mErrorMessageText;
 
+    // custom toast
+    private View customToastView;
+    private TextView toastText;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -68,6 +73,8 @@ public class TotalFragment extends Fragment {
         mTotalRecoveredView = (TotalView) RootView.findViewById(R.id.totalRecoveredView);
         mStatisticTakenAtView = (TotalView) RootView.findViewById(R.id.statisticTakenAtView);
         mErrorMessageText = (TextView) RootView.findViewById(R.id.errorMessageText);
+
+        initializeToasts(RootView);
 
         mProgressBar.setVisibility(View.VISIBLE);
         mTotalViewContainer.setVisibility(View.GONE);
@@ -123,7 +130,10 @@ public class TotalFragment extends Fragment {
             instance.isTotalActive = true;
 
             if (mIsRefreshing) {
-                Toast.makeText(getContext(), "World Statistic Updated", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "World Statistic Updated", Toast.LENGTH_SHORT).show();
+
+                setCustomToast("World Statistic Updated");
+
                 mIsRefreshing = false;
             }
         }
@@ -149,5 +159,21 @@ public class TotalFragment extends Fragment {
         }
 
         return str;
+    }
+
+    private void initializeToasts(View view) {
+        LayoutInflater inflater = getLayoutInflater();
+        customToastView = inflater.inflate(R.layout.toast_custom,
+                (ViewGroup) view.findViewById(R.id.customToast));
+        toastText = (TextView) customToastView.findViewById(R.id.toastText);
+    }
+
+    private void setCustomToast(String message) {
+        toastText.setText(message);
+        Toast toast = new Toast(getContext());
+        toast.setGravity(Gravity.BOTTOM, 0, 40);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(customToastView);
+        toast.show();
     }
 }

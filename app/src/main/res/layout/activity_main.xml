@@ -22,6 +22,7 @@
             android:layout_height="wrap_content"
             android:icon="@drawable/ic_public_24px"
             android:id="@+id/TotalTab"
+            android:fontFamily="@font/montserrat_bold"
             android:text="Total" />
 
         <com.google.android.material.tabs.TabItem
@@ -29,6 +30,7 @@
             android:layout_height="wrap_content"
             android:icon="@drawable/ic_outlined_flag_24px"
             android:id="@+id/CountryTab"
+            android:fontFamily="@font/montserrat_bold"
             android:text="Countries" />
 
         <com.google.android.material.tabs.TabItem
@@ -36,6 +38,7 @@
             android:layout_height="wrap_content"
             android:icon="@drawable/ic_info_24px"
             android:id="@+id/InfoTab"
+            android:fontFamily="@font/montserrat_bold"
             android:text="Info" />
 
     </com.google.android.material.tabs.TabLayout>
